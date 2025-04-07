@@ -1,0 +1,52 @@
+// For format details, see https://containers.dev/implementors/json_reference/
+{
+    "name": "laravel_test",
+    "dockerComposeFile": [
+        "../../docker-compose-dev.yml"
+    ],
+    "init": true,
+    "mounts": [
+        {
+            "source": ".devcontainer/webapp/bash_history",
+            "target": "/home/omkegams/.bash_history",
+            "type": "bind"
+        },
+        {
+            "source": "~/.ssh",
+            "target": "/home/omkegams/.ssh",
+            "type": "bind"
+        }
+    ],
+    // Tells devcontainer.json supporting services / tools whether they should run
+    // /bin/sh -c "while sleep 1000; do :; done" when starting the container instead of the container’s default command
+    "overrideCommand": false,
+    "service": "webapp",
+    // "remoteEnv": {"PATH": "/home/omkegams/.local/bin:${containerEnv:PATH}"},
+    "remoteUser": "omkegams",
+    "workspaceFolder": "/var/www/html",
+    // Set *default* container specific settings.json values on container create.
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.formatOnSave": true,
+                "terminal.integrated.shell.linux": "/bin/bash",
+                "[php]": {
+                    "php.validate.executablePath": "/usr/local/bin/php"
+                }
+            },
+            // https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_vs-code-specific-properties
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "EditorConfig.EditorConfig",
+                "laravel.vscode-laravel"    
+            ]
+        }
+    },
+    // Uncomment the next line if you want start specific services in your Docker Compose config.
+    // "runServices": [],
+    // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+    // "shutdownAction": "none",
+    // Uncomment the next line to run commands after the container is created.
+    "postCreateCommand": "cat .devcontainer/bashrc.override.sh >> ~/.bashrc"
+}

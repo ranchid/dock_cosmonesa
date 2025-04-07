@@ -1,0 +1,78 @@
+volumes:
+  postgres_data:
+  postgres_data_backups: {}
+
+services:
+  postgres:
+    build: 
+      dockerfile: compose/db_postgres/Dockerfile
+    image: cosmonesa_pg
+    container_name: cosmonesa_pg
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_backups:/backups
+    ports:
+      - 5433:5432
+  
+  webapp:
+    build:
+      dockerfile: compose/webapp/Dockerfile
+      target: dev
+    image: cosmonesa_webapp
+    container_name: cosmonesa_webapp
+    tty: true
+    volumes:
+      - ./cosmonesa10:/var/www/html:Z
+      - ./compose/webapp/php_config.ini:/usr/local/etc/php/php_config.ini:z
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+    expose:
+      - 9000
+    depends_on:
+      postgres:
+        condition: service_started
+
+  webserver:
+    image: nginx:stable-bookworm
+    volumes:
+      - ./cosmonesa10:/var/www/html:ro,Z
+      - ./nginx/cosmonesa10.conf:/etc/nginx/conf.d/cosmonesa10.conf:ro
+    environment:
+      - TS=${TZ}
+    ports:
+      - 8000:8000
+    depends_on:
+      webapp:
+        condition: service_started
+
+  # backend:
+  #   build:
+  #     dockerfile: compose/develop/backend/Dockerfile
+  #   image: cosmonesa/backend
+  #   container_name: cosmonesa_backend
+  #   volumes:
+  #     - backend:/var/www/html:Z
+  #     - compose/develop/backend/php_config.ini:/usr/local/etc/php/php_config.ini:z
+  #   environment:
+  #     - TZ=${TZ}
+  #   expose:
+  #     - 9000
+  
+  # frontend:
+  #   build: 
+  #     dockerfile: compose/develop/frontend/Dockerfile
+  #   image: cosmonesa/frontend
+  #   container_name: cosmonesa_frontend
+  #   volumes:
+  #     - frontend:/webapps:Z
+  #   command: [npm bla bla]
+
+
+    
