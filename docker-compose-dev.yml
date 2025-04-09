@@ -6,7 +6,7 @@ services:
   postgres:
     build: 
       dockerfile: compose/db_postgres/Dockerfile
-    image: cosmonesa_pg
+    image: cosmonesa/pg
     container_name: cosmonesa_pg
     environment:
       - POSTGRES_DB=${DB_DATABASE}
@@ -17,17 +17,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - postgres_data_backups:/backups
     ports:
-      - 5433:5432
+      - 127.0.0.1:5433:5432
   
   webapp:
     build:
       dockerfile: compose/webapp/Dockerfile
       target: dev
-    image: cosmonesa_webapp
+    image: cosmonesa/webapp
     container_name: cosmonesa_webapp
-    tty: true
     volumes:
       - ./cosmonesa10:/var/www/html:Z
+      - .:/var/www:Z
       - ./compose/webapp/php_config.ini:/usr/local/etc/php/php_config.ini:z
     env_file:
       - .env
@@ -43,11 +43,11 @@ services:
     image: nginx:stable-bookworm
     volumes:
       - ./cosmonesa10:/var/www/html:ro,Z
-      - ./nginx/cosmonesa10.conf:/etc/nginx/conf.d/cosmonesa10.conf:ro
+      - ./compose/nginx/cosmonesa10.conf:/etc/nginx/conf.d/cosmonesa10.conf
     environment:
       - TS=${TZ}
     ports:
-      - 8000:8000
+      - 127.0.0.1:80:80
     depends_on:
       webapp:
         condition: service_started

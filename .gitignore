@@ -10,4 +10,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-bash_history
+.devcontainer/*/bash_history

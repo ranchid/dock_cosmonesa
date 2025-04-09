@@ -1,4 +1,4 @@
-FROM php:8.2.28-fpm-bookworm as base
+FROM php:8.2.28-fpm-bookworm AS base
 
 RUN apt-get update && apt-get upgrade --no-install-recommends -y \
     && apt-get install --no-install-recommends -y \
@@ -11,17 +11,16 @@ RUN apt-get update && apt-get upgrade --no-install-recommends -y \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo_pgsql mbstring \
+RUN docker-php-ext-install -j$(nproc) pdo_pgsql mbstring \
     exif pcntl bcmath \
     opcache zip soap intl
 
-RUN docker-php-ext-install gd \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-enable gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-FROM base as dev
+FROM base AS dev
 
 ARG UID=1000
 ARG GID=1000
@@ -50,11 +49,11 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 WORKDIR /var/www/html
 
 USER ${USERDEV}
-RUN if [-f ./composer.json]; then \
-        composer install --no-interaction; \
-    fi
+# RUN if [-f ./composer.json]; then \
+#         composer install --no-interaction; \
+#     fi
 
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+# ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 CMD [ "php-fpm" ]
 
