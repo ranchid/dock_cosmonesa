@@ -34,19 +34,15 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN groupadd --gid ${GID} ${USERDEV} \
     && useradd --uid ${UID} --gid ${GID} --shell /bin/bash --create-home ${USERDEV} \
     && usermod -aG sudo ${USERDEV} \
-    && echo '${USERDEV} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo "${USERDEV} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN sed -i "s/user = www-data/user = ${USERDEV}/g" /usr/local/etc/php-fpm.d/www.conf \
     && sed -i "s/group = www-data/group = ${USERDEV}/g" /usr/local/etc/php-fpm.d/www.conf
 
-RUN chown www-data:www-data -R /var/www/html \
-    && chmod -R 755 /var/www/html
+# RUN chown www-data:www-data -R /var/www/html \
+#     && chmod -R 755 /var/www/html
 
-COPY ./compose/webapp/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-WORKDIR /var/www/html
+# WORKDIR /var/www/html
 
 USER ${USERDEV}
 # RUN if [-f ./composer.json]; then \

@@ -9,5 +9,7 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
-/.vscode
-.devcontainer/*/bash_history
+.vscode
+.vscode-server
+.dotnet
+.cache

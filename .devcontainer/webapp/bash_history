@@ -1,0 +1,43 @@
+ls
+cd ..
+git pull origin main
+ls -alHr
+ls .git/
+git pull origin main
+git config list
+git config --list
+entrypoint.sh 
+ls ~/.local/bin/
+ls ~/.local/bin/postbuild
+sh ~/.local/bin/postbuild
+echo $path
+echo $PATH
+postbuild
+history 
+which postbuild
+postbuild
+sh ~/.local/bin/postbuild
+php artisan serve 0.0.0.0:8080
+php artisan serve --help
+php artisan serve --host=0.0.0.0 --port=8080
+git config --list
+ls
+cd ..
+ls
+ls ../
+sudo sucat ~/.bashrc 
+cat /usr/local/etc/php-fpm.conf
+cat /usr/local/etc/php-fpm.conf | grep 'var'
+cat /usr/local/etc/php-fpm.d/www.conf
+cat /usr/local/etc/php-fpm.d/www.conf | grep '/var'
+ls ~/.cache/
+ls
+ls ..
+sudo su
+top
+sudo apt-get install htop
+sudo apt-get update
+htop
+sudo apt-get install htop
+sudo apt-get install --no-install-recommends htop
+htop
