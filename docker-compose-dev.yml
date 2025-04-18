@@ -9,16 +9,16 @@ services:
     image: cosmonesa/pg
     container_name: cosmonesa_pg
     environment:
-      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_MULTIPLE_DATABASES=dummy_backend,cosmonesa_db
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - TZ=${TZ}
     volumes:
+      - ./compose/db_postgres/pg_multi_db:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
       - postgres_data_backups:/backups
     ports:
       - 127.0.0.1:5433:5432
-  
   webapp:
     build:
       dockerfile: compose/webapp/Dockerfile
@@ -33,23 +33,49 @@ services:
       - .env
     environment:
       - TZ=${TZ}
+      - DB_DATABASE=cosmonesa_db
     expose:
       - 9000
     depends_on:
       postgres:
         condition: service_started
-
+  dummy_backend:
+    build:
+      context: compose/dummy_backend/
+      dockerfile: Dockerfile
+      target: dev
+    image: cosmonesa/dummy_backend
+    container_name: cosmonesa_dummy_backend
+    volumes:
+      - ./dummy_backend:/var/www/html:Z
+      - .:/var/www:Z
+      - ./compose/dummy_backend/php_config.ini:/usr/local/etc/php/php_config.ini:z
+    env_file:
+      - .env
+    environment:
+      - TZ=${TZ}
+      - DB_DATABASE=dummy_backend
+    expose:
+      - 9000
+    depends_on:
+      postgres:
+        condition: service_started
   webserver:
     image: nginx:stable-bookworm
     volumes:
-      - ./cosmonesa10:/var/www/html:ro,Z
+      - ./cosmonesa10:/var/www/html/cosmonesa10:ro,Z
       - ./compose/nginx/cosmonesa10.conf:/etc/nginx/conf.d/cosmonesa10.conf
+      - ./dummy_backend:/var/www/html/dummy_backend:ro,Z
+      - ./compose/nginx/dummy_backend.conf:/etc/nginx/conf.d/dummy_backend.conf
     environment:
       - TS=${TZ}
     ports:
       - 127.0.0.1:80:80
+      - 127.0.0.1:8080:8080
     depends_on:
       webapp:
+        condition: service_started
+      dummy_backend:
         condition: service_started
 
   # backend:
