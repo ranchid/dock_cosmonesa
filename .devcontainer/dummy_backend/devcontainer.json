@@ -7,13 +7,8 @@
     "init": true,
     "mounts": [
         {
-            "source": ".devcontainer/dummy_backend/postbuild.sh",
-            "target": "/home/gemvoy/.local/bin/postbuild",
-            "type": "bind"
-        },
-        {
-            "source": ".devcontainer/dummy_backend/bash_history",
-            "target": "/home/gemvoy/.bash_history",
+            "source": ".devcontainer/dummy_backend/",
+            "target": "/home/gemvoy/",
             "type": "bind"
         },
         {
@@ -28,7 +23,7 @@
     "service": "dummy_backend",
     // "remoteEnv": {"PATH": "/home/dummy_backend/.local/bin:${containerEnv:PATH}"},
     "remoteUser": "gemvoy",
-    "workspaceFolder": "/var/www/html",
+    "workspaceFolder": "/var/www/dummy_backend",
     // Set *default* container specific settings.json values on container create.
     "customizations": {
         "vscode": {
@@ -54,5 +49,5 @@
     // "shutdownAction": "none",
     // Uncomment the next line to run commands after the container is created.
     // "postCreateCommand": "cat .devcontainer/dummy_backend/bashrc.override.sh >> ~/.bashrc"
-    "postCreateCommand": "sh /usr/local/bin/postbuild"
+    "postCreateCommand": "sh /usr/local/bin/postbuild.sh"
 }

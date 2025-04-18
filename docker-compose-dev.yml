@@ -21,14 +21,15 @@ services:
       - 127.0.0.1:5433:5432
   webapp:
     build:
-      dockerfile: compose/webapp/Dockerfile
+      context: compose/webapp
+      dockerfile: Dockerfile
       target: dev
     image: cosmonesa/webapp
     container_name: cosmonesa_webapp
     volumes:
-      - ./cosmonesa10:/var/www/html:Z
+      # - ./cosmonesa10:/var/www/html:Z
       - .:/var/www:Z
-      - ./compose/webapp/php_config.ini:/usr/local/etc/php/php_config.ini:z
+      # - ./compose/webapp/php_config.ini:/usr/local/etc/php/php_config.ini:z
     env_file:
       - .env
     environment:
@@ -47,9 +48,9 @@ services:
     image: cosmonesa/dummy_backend
     container_name: cosmonesa_dummy_backend
     volumes:
-      - ./dummy_backend:/var/www/html:Z
+      # - ./dummy_backend:/var/www/html:Z
       - .:/var/www:Z
-      - ./compose/dummy_backend/php_config.ini:/usr/local/etc/php/php_config.ini:z
+      # - ./compose/dummy_backend/php_config.ini:/usr/local/etc/php/php_config.ini:z
     env_file:
       - .env
     environment:
@@ -63,14 +64,14 @@ services:
   webserver:
     image: nginx:stable-bookworm
     volumes:
-      - ./cosmonesa10:/var/www/html/cosmonesa10:ro,Z
+      - ./cosmonesa10:/var/www/cosmonesa10:ro,Z
       - ./compose/nginx/cosmonesa10.conf:/etc/nginx/conf.d/cosmonesa10.conf
-      - ./dummy_backend:/var/www/html/dummy_backend:ro,Z
+      - ./dummy_backend:/var/www/dummy_backend:ro,Z
       - ./compose/nginx/dummy_backend.conf:/etc/nginx/conf.d/dummy_backend.conf
     environment:
       - TS=${TZ}
     ports:
-      - 127.0.0.1:80:80
+      - 127.0.0.1:8000:8000
       - 127.0.0.1:8080:8080
     depends_on:
       webapp:

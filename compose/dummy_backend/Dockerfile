@@ -31,6 +31,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+COPY php_conf.ini /usr/local/etc/php/php_config.ini
+
 RUN groupadd --gid ${GID} ${USERDEV} \
     && useradd --uid ${UID} --gid ${GID} --shell /bin/bash --create-home ${USERDEV} \
     && usermod -aG sudo ${USERDEV} \

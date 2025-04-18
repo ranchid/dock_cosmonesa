@@ -1,5 +1,0 @@
-composer require laravel/installer
-composer create-project "laravel/laravel:^10.0" .
-php artisan migrate
-composer require laravel/sanctum
-php artisan migrate

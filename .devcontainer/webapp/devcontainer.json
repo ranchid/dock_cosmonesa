@@ -7,13 +7,8 @@
     "init": true,
     "mounts": [
         {
-            "source": ".devcontainer/webapp/postbuild.sh",
-            "target": "/home/omkegams/.local/bin/postbuild",
-            "type": "bind"
-        },
-        {
-            "source": ".devcontainer/webapp/bash_history",
-            "target": "/home/omkegams/.bash_history",
+            "source": ".devcontainer/webapp/",
+            "target": "/home/omkegams/",
             "type": "bind"
         },
         {
@@ -28,7 +23,7 @@
     "service": "webapp",
     // "remoteEnv": {"PATH": "/home/omkegams/.local/bin:${containerEnv:PATH}"},
     "remoteUser": "omkegams",
-    "workspaceFolder": "/var/www/html",
+    "workspaceFolder": "/var/www/cosmonesa10",
     // Set *default* container specific settings.json values on container create.
     "customizations": {
         "vscode": {
@@ -54,5 +49,5 @@
     // "shutdownAction": "none",
     // Uncomment the next line to run commands after the container is created.
     // "postCreateCommand": "cat .devcontainer/webapp/bashrc.override.sh >> ~/.bashrc"
-    "postCreateCommand": "sh ~/.local/bin/postbuild"
+    "postCreateCommand": "sh /usr/local/bin/postbuild.sh"
 }

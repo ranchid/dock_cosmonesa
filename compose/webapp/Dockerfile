@@ -31,10 +31,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+COPY php_conf.ini /usr/local/etc/php/php_config.ini
+
 RUN groupadd --gid ${GID} ${USERDEV} \
     && useradd --uid ${UID} --gid ${GID} --shell /bin/bash --create-home ${USERDEV} \
     && usermod -aG sudo ${USERDEV} \
     && echo "${USERDEV} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+COPY postbuild_dev.sh /usr/local/bin/postbuild.sh
+RUN chmod +x /usr/local/bin/postbuild.sh
 
 RUN sed -i "s/user = www-data/user = ${USERDEV}/g" /usr/local/etc/php-fpm.d/www.conf \
     && sed -i "s/group = www-data/group = ${USERDEV}/g" /usr/local/etc/php-fpm.d/www.conf
