@@ -11,7 +11,7 @@ RUN apt-get update && apt-get upgrade --no-install-recommends -y \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install -j$(nproc) pdo_pgsql mbstring \
+RUN docker-php-ext-install -j$(nproc) pdo_pgsql pdo_mysql mbstring \
     exif pcntl bcmath \
     opcache zip soap intl
 

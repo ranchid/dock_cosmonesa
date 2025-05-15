@@ -10,7 +10,6 @@ yarn-error.log
 /.fleet
 /.idea
 .vscode
-.vscode-server
-.dotnet
-.cache
 *.env
+.devcontainer/*
+!devcontainer.json
