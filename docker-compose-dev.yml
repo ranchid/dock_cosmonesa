@@ -16,22 +16,22 @@ services:
       - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
     ports:
       - 127.0.0.1:3366:3306
-  postgres:
-    build: 
-      dockerfile: compose/db_postgres/Dockerfile
-    image: cosmonesa/pg
-    container_name: cosmonesa_pg
-    environment:
-      - POSTGRES_MULTIPLE_DATABASES=dummy_backend,cosmonesa_db
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - TZ=${TZ}
-    volumes:
-      - ./compose/db_postgres/pg_multi_db:/docker-entrypoint-initdb.d
-      - postgres_data:/var/lib/postgresql/data
-      - postgres_data_backups:/backups
-    ports:
-      - 127.0.0.1:5433:5432
+  # postgres:
+  #   build: 
+  #     dockerfile: compose/db_postgres/Dockerfile
+  #   image: cosmonesa/pg
+  #   container_name: cosmonesa_pg
+  #   environment:
+  #     - POSTGRES_MULTIPLE_DATABASES=dummy_backend,cosmonesa_db
+  #     - POSTGRES_USER=${DB_USERNAME}
+  #     - POSTGRES_PASSWORD=${DB_PASSWORD}
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ./compose/db_postgres/pg_multi_db:/docker-entrypoint-initdb.d
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - postgres_data_backups:/backups
+  #   ports:
+  #     - 127.0.0.1:5433:5432
   webapp:
     build:
       context: compose/webapp
