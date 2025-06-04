@@ -51,8 +51,10 @@ services:
     expose:
       - 9000
     depends_on:
-      postgres:
-        condition: service_started
+      mariadb:
+          condition: service_started
+      # postgres:
+      #   condition: service_started
   # dummy_backend:
   #   build:
   #     context: compose/dummy_backend/
