@@ -39,7 +39,8 @@
             "extensions": [
                 "bmewburn.vscode-intelephense-client",
                 "EditorConfig.EditorConfig",
-                "laravel.vscode-laravel"    
+                "laravel.vscode-laravel",
+                "eamodio.gitlens" 
             ]
         }
     },
