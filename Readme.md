@@ -1,2 +1,2 @@
 ## About This Project
-Hmmm, I'll think it later...
+put initdb.sql on root folder guh, then the database will served as well

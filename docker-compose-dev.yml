@@ -9,6 +9,7 @@ services:
     container_name: cosmonesa_mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:Z
     environment:
       - MARIADB_DATABASE=${DB_DATABASE}
       - MARIADB_USER=${DB_USERNAME}
