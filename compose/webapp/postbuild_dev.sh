@@ -9,5 +9,3 @@ if [ -f ./composer.json ] && [ -f ./artisan ]; then \
         "; \
     
 fi
-
-exec "$@"
